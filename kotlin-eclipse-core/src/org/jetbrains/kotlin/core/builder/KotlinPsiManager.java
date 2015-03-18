@@ -164,7 +164,15 @@ public class KotlinPsiManager {
     }
     
     public boolean exists(@NotNull IFile file) {
-        return projectFiles.get(file.getProject()).contains(file);
+        synchronized (mapOperationLock) {
+            IProject project = file.getProject();
+            if (project == null) return false;
+            
+            if (projectFiles.containsKey(project)) {
+                return projectFiles.get(project).contains(file);
+            }
+            return false;
+        }
     }
     
     @NotNull
@@ -265,7 +273,11 @@ public class KotlinPsiManager {
     public static JetFile getKotlinFileIfExist(@NotNull String sourceFileName) {
         IPath sourceFilePath = new Path(sourceFileName);
         IFile projectFile = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(sourceFilePath);
-        return KotlinPsiManager.getKotlinParsedFile(projectFile);
+        if (projectFile != null) {
+            return KotlinPsiManager.getKotlinParsedFile(projectFile);
+        }
+        
+        return null;
     }
     
     @Nullable

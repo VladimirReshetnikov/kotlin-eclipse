@@ -77,7 +77,7 @@ import com.intellij.psi.impl.file.impl.JavaFileManager;
 public class KotlinEnvironment {
     
     public final static String KT_JDK_ANNOTATIONS_PATH = ProjectUtils.buildLibPath("kotlin-jdk-annotations");
-    public final static String KOTLIN_RUNTIME_PATH = ProjectUtils.buildLibPath("kotlin-compiler");
+    public final static String KOTLIN_COMPILER_PATH = ProjectUtils.buildLibPath("kotlin-compiler");
     
     private static final Map<IJavaProject, KotlinEnvironment> cachedEnvironment = new HashMap<>();
     private static final Object environmentLock = new Object();
@@ -123,8 +123,8 @@ public class KotlinEnvironment {
         
         project.registerService(VirtualFileFinderFactory.class, new EclipseVirtualFileFinder(classPath));
         
-        ExternalDeclarationsProvider.OBJECT$.registerExtensionPoint(project);
-        ExpressionCodegenExtension.OBJECT$.registerExtensionPoint(project);
+        ExternalDeclarationsProvider.Companion.registerExtensionPoint(project);
+        ExpressionCodegenExtension.Companion.registerExtensionPoint(project);
         
         for (String config : EnvironmentConfigFiles.JVM_CONFIG_FILES) {
             registerApplicationExtensionPointsAndExtensionsFrom(config);
@@ -139,13 +139,7 @@ public class KotlinEnvironment {
     }
     
     private static void registerApplicationExtensionPointsAndExtensionsFrom(String configFilePath) {
-//        File jar = new File(KOTLIN_RUNTIME_PATH);
-//        
-//        IdeaPluginDescriptorImpl descriptor = PluginManagerCoreProxy.loadDescriptorFromJar(jar, configFilePath);
-//        assert descriptor != null : "Can not load descriptor from " + configFilePath + " relative to " + jar;
-//
-//        PluginManagerCoreProxy.registerExtensionPointsAndExtensions(Extensions.getRootArea(), Lists.newArrayList(descriptor));
-        File pluginRoot = new File(KOTLIN_RUNTIME_PATH);
+        File pluginRoot = new File(KOTLIN_COMPILER_PATH);
         CoreApplicationEnvironment.registerExtensionPointAndExtensions(pluginRoot, configFilePath, Extensions.getRootArea());
     }
     
