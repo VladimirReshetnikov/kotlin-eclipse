@@ -30,6 +30,8 @@
 		
 		<aspectj.version>1.8.2</aspectj.version>
 		<aspectj.plugin.version>1.7</aspectj.plugin.version>
+
+		<maven-clean.plugin.version>2.5</maven-clean.plugin.version>
 	</properties>
 
 	<repositories>
@@ -109,6 +111,11 @@
 
 		<pluginManagement>
 			<plugins>
+				<plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-clean-plugin</artifactId>
+			        <version>${maven-clean.plugin.version}</version>
+        		</plugin>
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>target-platform-configuration</artifactId>

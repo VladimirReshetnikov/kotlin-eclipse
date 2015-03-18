@@ -50,15 +50,12 @@ import org.jetbrains.kotlin.psi.JetFile;
 import org.jetbrains.kotlin.resolve.CodeAnalyzerInitializer;
 import org.jetbrains.kotlin.utils.PathUtil;
 
-import com.google.common.collect.Lists;
 import com.intellij.codeInsight.ContainerProvider;
 import com.intellij.codeInsight.ExternalAnnotationsManager;
 import com.intellij.core.CoreApplicationEnvironment;
 import com.intellij.core.CoreJavaFileManager;
 import com.intellij.core.JavaCoreApplicationEnvironment;
 import com.intellij.core.JavaCoreProjectEnvironment;
-import com.intellij.ide.plugins.IdeaPluginDescriptorImpl;
-import com.intellij.ide.plugins.PluginManagerCoreProxy;
 import com.intellij.mock.MockProject;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.components.ServiceManager;
@@ -142,12 +139,14 @@ public class KotlinEnvironment {
     }
     
     private static void registerApplicationExtensionPointsAndExtensionsFrom(String configFilePath) {
-        File jar = new File(KOTLIN_RUNTIME_PATH);
-        
-        IdeaPluginDescriptorImpl descriptor = PluginManagerCoreProxy.loadDescriptorFromJar(jar, configFilePath);
-        assert descriptor != null : "Can not load descriptor from " + configFilePath + " relative to " + jar;
-
-        PluginManagerCoreProxy.registerExtensionPointsAndExtensions(Extensions.getRootArea(), Lists.newArrayList(descriptor));
+//        File jar = new File(KOTLIN_RUNTIME_PATH);
+//        
+//        IdeaPluginDescriptorImpl descriptor = PluginManagerCoreProxy.loadDescriptorFromJar(jar, configFilePath);
+//        assert descriptor != null : "Can not load descriptor from " + configFilePath + " relative to " + jar;
+//
+//        PluginManagerCoreProxy.registerExtensionPointsAndExtensions(Extensions.getRootArea(), Lists.newArrayList(descriptor));
+        File pluginRoot = new File(KOTLIN_RUNTIME_PATH);
+        CoreApplicationEnvironment.registerExtensionPointAndExtensions(pluginRoot, configFilePath, Extensions.getRootArea());
     }
     
     @NotNull
